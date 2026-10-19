@@ -1,4 +1,4 @@
-"""Checks of supplied foundation only; assessed TODOs are not called."""
+"""Checks for the SmartCare foundation and completed service workflows."""
 
 from datetime import datetime
 
@@ -78,6 +78,31 @@ def test_duplicate_practitioner_preserves_original() -> None:
     assert practitioner.name == 'Taylor Example'
 
 
+def test_patient_lookup_returns_registered_patient() -> None:
+    """Verify patient lookup returns the stored object and rejects invalid IDs.
+    """
+    data_store, patient, _, _ = foundation()
+    service = PatientService(data_store)
+    assert service.find_patient('P1') is patient
+    with pytest.raises(LookupError):
+        service.find_patient('missing')
+    with pytest.raises(ValueError):
+        service.find_patient(' ')
+
+
+def test_practitioner_lookup_returns_registered_practitioner() -> None:
+    """Verify practitioner lookup returns the stored object and rejects
+    invalid IDs.
+    """
+    data_store, _, practitioner, _ = foundation()
+    service = PractitionerService(data_store)
+    assert service.find_practitioner('D1') is practitioner
+    with pytest.raises(LookupError):
+        service.find_practitioner('missing')
+    with pytest.raises(ValueError):
+        service.find_practitioner(' ')
+
+
 def test_duplicate_appointment_preserves_original() -> None:
     """Verify duplicate appointment preserves original."""
     data_store, _, _, appointment_service = foundation()
@@ -134,8 +159,8 @@ def test_conflict_rule_and_different_practitioner() -> None:
     ).practitioner.practitioner_id == 'D2'
 
 
-def test_domain_cancellation_and_guard() -> None:
-    """Verify domain cancellation and guard."""
+def test_service_cancellation_and_guard() -> None:
+    """Verify service cancellation, retention and invalid transition guard."""
     data_store, _, _, appointment_service = foundation()
     appointment = appointment_service.book_appointment(
         'A1',
@@ -143,9 +168,13 @@ def test_domain_cancellation_and_guard() -> None:
         'D1',
         datetime(2026, 10, 1, 9),
     )
-    appointment.cancel()
+    assert appointment_service.cancel_appointment('A1') is appointment
     assert appointment.status is AppointmentStatus.CANCELLED
     assert data_store.list_appointments() == [appointment]
     with pytest.raises(ValueError):
-        appointment.cancel()
+        appointment_service.cancel_appointment('A1')
     assert appointment.status is AppointmentStatus.CANCELLED
+    with pytest.raises(LookupError):
+        appointment_service.cancel_appointment('missing')
+    with pytest.raises(ValueError):
+        appointment_service.cancel_appointment(' ')
