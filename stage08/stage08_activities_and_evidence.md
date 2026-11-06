@@ -219,4 +219,4 @@ Response: [complete]
 Verified integrated code SHA / result: see I.
 Submitted SHA and evidence-only difference if any: [complete]
 Unresolved issues or incomplete checks / owner / next action: [complete]
-Handover note: [complete]
+Handover note: [complete] 
