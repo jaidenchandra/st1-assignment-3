@@ -335,15 +335,18 @@ No unrelated test failures were observed in the supplied initial run. The two ca
 - External behaviour to preserve / relevant tests: Only scheduled appointments for the same practitioner at the same time should conflict. Different practitioners remain bookable at that time. The excluded appointment ID remains excluded. Appointment lookup, cancellation history, return values and exceptions must remain unchanged. Relevant tests include test_conflict_rule_and_different_practitioner and the existing cancellation tests.
 
 - Before result: See G for the full passing suite at 3f24502d16277ec256e51cdc96ce123d9861c2fd: 16 passed in 0.01s. Confirm the current suite passes immediately before editing.
+- Actual change / diff / separate refactor SHA: Replaced appointment.status.value == "scheduled" with appointment.status == AppointmentStatus.SCHEDULED in SmartCareDataStore.has_practitioner_conflict(). The inspected diff contained one insertion and one deletion. Separate refactor SHA: c143ba3b8009e04d43a786413a6a5cdb9ea8e349.
 
-- Actual change / diff / separate refactor SHA: Pending implementation and separate commit.
-
-- Focused and full after-refactor commands / working directory / results / evidence: Pending execution. Commands are python -m pytest tests/test_starter.py::test_conflict_rule_and_different_practitioner -v and python -m pytest -q, from ~/Documents/st1-assignment-3/project.
-
-- Result / reason / behaviour-preservation conclusion: Pending before/after verification.
-
+- Focused and full after-refactor commands / working directory / results / evidence:
+  - Working directory: ~/Documents/st1-assignment-3/project.
+  - Focused command: python -m pytest tests/test_starter.py::test_conflict_rule_and_different_practitioner -v.
+  - Focused result: 1 passed in 0.02s.
+  - Full command: python -m pytest -q.
+  - Full result: 16 passed in 0.01s.
+  - These results were captured after the edit and before committing it.
+  - Evidence: Add the saved test-output screenshot link.
+  - Result: Accepted. The enum comparison removes the magic status string. The focused test and full regression suite passed, supporting preservation of the tested behaviour.## I. Git, human review and integration
 ## I. Git, human review and integration
-
 
 - Issues for both defects / refactor scope and owners:
   - F8-01: Restore lookup of retained cancelled appointments. Owner: Yashmeen . Issue: https://github.com/jaidenchandra/st1-assignment-3/issues/6
