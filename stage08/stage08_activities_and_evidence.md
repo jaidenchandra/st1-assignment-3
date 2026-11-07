@@ -177,63 +177,50 @@ Traceback — exception/assertion; expected/observed values; test line; call pat
   - Evidence: Original failing terminal output supplied during debugging. Add its saved repository artefact link.
 ## C. F8-01 diagnosis and repair
 
+- Symptom / observed behaviour: A second scheduled booking for the same practitioner at the same datetime was accepted instead of raising ValueError.
 
-- Symptom / observed behaviour: Stage 7 code SHA and requirement baseline: Not yet verified. Retrieve the passing integrated Stage 7 SHA and requirement version from the Stage 7 record. Relevant requirements include FR-07 (retained appointment history) and AC-04.2 (same-practitioner/time conflicts).
-
-- Expected behaviour and requirement: Baseline test command / working directory / observed result / evidence: The original passing Stage 7 run has not yet been verified from its record. The later Stage 8 failing run is recorded below and is not a passing baseline.
-
-- Minimal synthetic reproduction steps: Clean preparation SHA if a record-only commit followed Stage 7: Not yet verified from Git history.
-
-
-- Meaningful failing test path/name and exact relevant failure: Branch and preparer / how teammates obtained this branch: Work was performed on debug/stage08. Preparer identity and teammates' actual branch access steps still need recording.
-
-- Downloaded tool version, source SHA256 and --check outcome: Not yet verified. Retrieve the actual utility details and original preparation output from the preparer or tutor.
-
-- --apply and --verify output summaries / artefact references: Original preparation outputs have not yet been supplied. These outcomes cannot be confirmed from the test results alone.
-
-- Bounded diff inspected and recovery location (not committed): The project/.stage8_faults folder was visible in PyCharm. Its recovery contents, original preparation diff and exclusion from Git still need verification.
-
-- Prepared faulty-state commit SHA: The initial failing run was performed at d44b1c109d201641974dcba38e4095974e7018d8. Confirm from the preparation history whether this is the prepared faulty-state checkpoint.
-
-- Preparation or recovery issues and resolution, if any: Original utility preparation issues are not yet verified. During test setup, pytest was missing from the active virtual environment. Installing the supplied requirements-dev.txt dependencies allowed the tests to run.
-
-- Initial prepared full-suite command / result / key failures:
-  - Working directory: ~/Documents/st1-assignment-3/project
-  - Command: python -m pytest -q
-  - Observed result: 3 failed, 13 passed in 0.05s.
-  - tests/test_stage07.py::test_cancelled_appointment_remains_in_store: lookup returned None instead of the retained appointment.
-  - tests/test_starter.py::test_conflict_rule_and_different_practitioner: the same-practitioner/time booking did not raise ValueError.
-  - tests/test_starter.py::test_service_cancellation_and_guard: the second cancellation raised LookupError instead of ValueError.
-  - Evidence: Original failing terminal output supplied during debugging. Add its saved repository artefact link.
-## D. F8-02 diagnosis and repair
-
-
-- Symptom / observed behaviour: Booking a second appointment for the same practitioner at the same date and time was accepted instead of raising ValueError.
-
-- Expected behaviour and requirement: Under AC-04.2, a scheduled appointment must prevent another booking for the same practitioner at the same time. Different practitioners may have appointments at that time.
+- Expected behaviour and requirement: FR-05 / AC-04.1 require rejection of a same-practitioner scheduled conflict. AC-04.2 permits different practitioners at the same time. A rejected booking must leave stored state unchanged.
 
 - Minimal synthetic reproduction steps:
   1. Create a shared SmartCareDataStore and AppointmentService.
   2. Register patient P1 and practitioners D1 and D2.
-  3. Book appointment A1 for P1 with D1 at 09:00 on 1 October 2026.
-  4. Attempt to book A2 with D1 at the same time. Expect ValueError.
-  5. Book A3 with D2 at the same time. Expect success.
+  3. Book A1 for P1 with D1 at 09:00 on 1 October 2026.
+  4. Attempt A2 with D1 at the same time; expect ValueError.
+  5. Book A3 with D2 at that time; expect success.
 
-- Meaningful failing test path/name and exact relevant failure: tests/test_starter.py::test_conflict_rule_and_different_practitioner, line 152. The original run reported: Failed: DID NOT RAISE <class 'ValueError'>. The test stopped at the same-practitioner check before reaching its different-practitioner assertion.
+- Meaningful failing test path/name and exact relevant failure: tests/test_starter.py::test_conflict_rule_and_different_practitioner failed at line 152 with: Failed: DID NOT RAISE <class 'ValueError'>. The failure occurred before the different-practitioner assertion.
 
-- Human hypothesis and intended checks: See E, F8-02. Any retrospective reconstruction must be identified as such.
+- Human hypothesis and intended checks: See E, F8-01. No independent pre-assistance hypothesis was saved; the retrospective explanation is disclosed there.
 
-- Supported root cause and inspected code/runtime evidence: SmartCareDataStore.has_practitioner_conflict() used appointment.practitioner.practitioner_id != practitioner_id. This checked appointments belonging to different practitioners and ignored appointments belonging to the requested practitioner. The incorrect comparison explains why the same-practitioner booking did not raise ValueError.
+- Supported root cause and inspected code/runtime evidence: SmartCareDataStore.has_practitioner_conflict() compared practitioner IDs using !=. This ignored appointments belonging to the requested practitioner and could incorrectly flag different practitioners.
 
-- Smallest justified fix / diff / why other behaviour is preserved: Changed only the practitioner comparison from != to ==. The appointment exclusion, date/time comparison and scheduled-status condition remained unchanged. No service interfaces or storage operations were changed.
+- Smallest justified fix / diff / why other behaviour is preserved: Changed the practitioner comparison from != to ==. The date/time, scheduled-status and excluded-appointment conditions remained unchanged during this repair. The later enum change was committed separately as refactoring.
 
-- Repair SHA / focused verification result:
-  - Repair checkpoint: 3f24502d16277ec256e51cdc96ce123d9861c2fd.
-  - Full-suite verification: python -m pytest -q, run from ~/Documents/st1-assignment-3/project.
-  - Observed result: 16 passed in 0.01s, including the conflict regression test.
-  - A separate focused-run result has not been verified from the supplied evidence.
-  - Evidence reference: See section G for the shared test output.
-  
+- Repair SHA / focused verification result: Repair checkpoint 3f24502d16277ec256e51cdc96ce123d9861c2fd. The full suite passed 16 tests in 0.01s after both repairs. A later focused run after the enum refactor passed 1 test in 0.02s. This later run is not claimed as an immediate post-repair focused run. See G/H for shared evidence and any additional regression results.
+
+## D. F8-02 diagnosis and repair
+
+- Symptom / observed behaviour: Looking up a cancelled appointment returned None even though it remained stored. Repeated service cancellation raised LookupError instead of ValueError.
+
+- Expected behaviour and requirement: FR-06/07 and BR-07 require guarded cancellation and retained history. FR-08 supports lookup, and AC-05.2 protects retained history. The same cancelled object must remain retrievable. Repeated cancellation must raise ValueError without changing state.
+
+- Minimal synthetic reproduction steps:
+  1. Create a SmartCareDataStore.
+  2. Register patient P2 and practitioner PR2.
+  3. Create and store appointment A2.
+  4. Call appointment.cancel().
+  5. Call store.find_appointment('A2'); expect the original object.
+  6. In the service scenario, cancel an appointment twice; expect the second cancellation to raise ValueError while retaining the cancelled object.
+
+- Meaningful failing test path/name and exact relevant failure: tests/test_stage07.py::test_cancelled_appointment_remains_in_store failed at line 53 because assert found is appointment received None. The related tests/test_starter.py::test_service_cancellation_and_guard failed at line 175 because repeated cancellation raised LookupError('Appointment not found') instead of ValueError.
+
+- Human hypothesis and intended checks: See E, F8-02. No independent pre-assistance hypothesis was saved; the retrospective explanation is disclosed there.
+
+- Supported root cause and inspected code/runtime evidence: SmartCareDataStore.find_appointment() explicitly excluded appointments whose status value was "cancelled". The service test confirmed retained list membership. The object was hidden from lookup rather than deleted. Service lookup converted None into LookupError before the cancellation guard was reached.
+
+- Smallest justified fix / diff / why other behaviour is preserved: Removed the cancelled-status filter from find_appointment(). ID validation, trimming, matching and the None result for a valid missing ID remained unchanged. The service and domain cancellation methods were unchanged.
+
+- Repair SHA / focused verification result: Cancellation repair commit 6eb84bc799e0ecc696ad828c788fa146af5ca646. Both cancellation tests passed within the later full-suite run at 3f24502d16277ec256e51cdc96ce123d9861c2fd: 16 passed in 0.01s. A separate focused result at the cancellation repair commit has not been verified from the supplied evidence. See G for shared evidence and any additional regression results.
 ## E. Human-first hypotheses
 
 Complete both entries BEFORE Copilot. C/D supply observed/expected/reproduction/test; retain those initial facts and link them here.
@@ -290,7 +277,53 @@ Actual prompt / output reference and member: Pending actual GitHub Copilot consu
 3. Ranked suggestion and evidence-based evaluation: Pending Copilot response.
 
 Final human conclusion and comparison with initial hypothesis: Code inspection identified an incorrect practitioner comparison in has_practitioner_conflict(). Changing != to == restored the same-practitioner conflict check. The full suite subsequently passed all 16 tests. Comparison with Copilot's actual findings remains pending. No independent initial human hypothesis was saved.
+### F8-01 Copilot review
 
+Actual prompt / output reference and member: Retrospective GitHub Copilot consultation performed by Yashmeen Kaur after ChatGPT-assisted repairs. Add the saved prompt/output link. The original human-first sequence was not followed, as disclosed in E.
+
+1. Ranked suggestion: The practitioner comparison is inverted.
+   - Evidence check: Inspect the original has_practitioner_conflict() condition and compare it with the failing same-practitioner test.
+   - Observed evidence: The original condition used != for practitioner IDs. The test booked D1 twice at the same datetime and failed because ValueError was not raised. Changing the comparison to == was followed by passing tests.
+   - Classification: Correct; supported by the supplied code and regression results.
+   - Decision: Accept. The comparison contradicts the same-practitioner conflict rule and explains the observed failure.
+
+2. Ranked suggestion: The datetime or scheduled-status condition does not match.
+   - Evidence check: Compare the stored datetime and status with the helper arguments.
+   - Observed evidence: The test uses the same when value for both bookings. No separate runtime inspection of all predicate values was recorded. The practitioner-only repair made the test pass without changing the datetime or status checks.
+   - Classification: Plausible but unverified as a general possibility; not supported as the cause of this failure.
+   - Decision: Reject as the diagnosed cause. Retain it as a check if a different conflict failure occurs.
+
+3. Ranked suggestion: The booking path skips the helper or uses another store.
+   - Evidence check: Inspect the service call and shared-store setup; runtime tracing could confirm the actual call and instance.
+   - Observed evidence: The supplied service calls self.data_store.has_practitioner_conflict() before insertion. Correcting only the helper comparison resolved the test failure. No separate runtime call trace was recorded.
+   - Classification: Weakly supported alternative, not established as the cause.
+   - Decision: Reject as the diagnosed cause because the inspected call path and successful minimal repair support the predicate defect.
+
+Final human conclusion and comparison with initial hypothesis: The supported cause was the inverted practitioner comparison. Copilot's first-ranked suggestion agreed with the already completed diagnosis. This was a retrospective review, not an independent diagnosis recorded before repair. Copilot also correctly identified that the original test did not establish unchanged stored state after a rejected booking; this needs an explicit regression assertion.
+
+### F8-02 Copilot review
+
+Actual prompt / output reference and member: Retrospective GitHub Copilot consultation performed by Yashmeen Kaur after ChatGPT-assisted repairs. Add the saved prompt/output link. The original human-first sequence was not followed, as disclosed in E.
+
+1. Ranked suggestion: Store lookup skips cancelled appointments.
+   - Evidence check: Inspect the original lookup condition and compare lookup with retained list membership.
+   - Observed evidence: The original method explicitly excluded status.value == "cancelled". The tests showed failed lookup while the cancelled object remained listed. Removing only the status filter was followed by passing cancellation tests.
+   - Classification: Correct; supported by code and test evidence.
+   - Decision: Accept. The filter hides retained history and prevents repeated cancellation from reaching the domain guard.
+
+2. Ranked suggestion: The appointment ID does not match the lookup argument.
+   - Evidence check: Compare the stored ID with the trimmed lookup argument, including case and whitespace.
+   - Observed evidence: The reproduction uses A2 for both storage and lookup. Removing the status filter resolved the failure without changing ID handling. No separate runtime repr comparison was recorded.
+   - Classification: Plausible alternative, but not supported as the cause of this failure.
+   - Decision: Reject as the diagnosed cause because the minimal filter repair resolved lookup without ID changes.
+
+3. Ranked suggestion: Lookup and listing use different store state.
+   - Evidence check: Compare store identities and the object seen by lookup and listing.
+   - Observed evidence: The direct failing test creates one store and performs insertion and lookup through it. The service test uses the shared store. No separate runtime identity trace was recorded.
+   - Classification: Weakly supported alternative, inconsistent with the supplied direct reproduction.
+   - Decision: Reject as the diagnosed cause. The explicit status filter better explains both failures.
+
+Final human conclusion and comparison with initial hypothesis: The appointment was retained but excluded from lookup. The service converted None into LookupError before the cancellation guard was reached. Copilot's first-ranked suggestion confirmed the already completed diagnosis. No independent initial human hypothesis was saved. Copilot also correctly noted that LookupError alone does not demonstrate unchanged state after repeated cancellation; that behaviour needs explicit regression assertions.
 ## G. Failing to passing regression evidence
 
 Explain how the assertions detect each relevant incorrect result and protect previous behaviour: 
@@ -308,7 +341,8 @@ Working directory for the recorded runs: ~/Documents/st1-assignment-3/project.
 | F8-02 after repair | 3f24502d16277ec256e51cdc96ce123d9861c2fd | python -m pytest -q; project directory above | Conflict test passed within the full suite. A separate focused-run result has not been verified. See passing evidence below. |
 | Full suite after both repairs, before refactor | 3f24502d16277ec256e51cdc96ce123d9861c2fd | python -m pytest -q; project directory above | 16 passed in 0.01s. See passing evidence below. |
 
-Evidence references:
+Evidence references:- [Focused regression results](evidence/regressions_after.txt)
+- [Full-suite results](evidence/full_suite_after_regressions.txt)
 - Original failure output: 3 failed, 13 passed in 0.05s. Repository artefact link still to be added.
 - Passing output: Screenshot showing SHA 3f24502d16277ec256e51cdc96ce123d9861c2fd and 16 passed in 0.01s. Repository artefact link still to be added.
 
@@ -323,7 +357,19 @@ The full suite also reruns the earlier domain and service tests to detect regres
 Unrelated failures investigated / resolution:
 
 No unrelated test failures were observed in the supplied initial run. The two cancellation failures were explained by the same lookup filter defect; the third failure concerned the practitioner conflict comparison. The earlier missing-pytest error was an environment setup issue resolved by installing requirements-dev.txt.
+### Additional focused regression verification
 
+The two focused tests were added after repairs and refactoring.
+
+- Working directory: ~/Documents/st1-assignment-3/project.
+- Focused command: python -m pytest tests/test_regressions.py -v.
+- Actual result: 2 passed in 0.02s.
+- Full-suite command: python -m pytest -q.
+- Actual result: 18 passed in 0.01s.
+- [Test evidence](evidence/regression_tests_18_passed.png).
+- [Regression tests](../project/tests/test_regressions.py).
+
+Execution of these new tests against the original faulty checkpoint is not yet verified.
 ## H. Refactoring decision and before/after verification
 
 

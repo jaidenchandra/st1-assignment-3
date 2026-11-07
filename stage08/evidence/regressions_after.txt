@@ -1,0 +1,10 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.7, pytest-8.3.5, pluggy-1.7.0 -- /Users/ADMIN/Documents/st1-assignment-3/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/ADMIN/Documents/st1-assignment-3/project
+collecting ... collected 2 items
+
+tests/test_regressions.py::test_f8_01_conflict_rejection_preserves_store PASSED [ 50%]
+tests/test_regressions.py::test_f8_02_cancelled_history_and_guard_preserve_store PASSED [100%]
+
+============================== 2 passed in 0.02s ===============================
