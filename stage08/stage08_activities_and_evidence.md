@@ -135,15 +135,12 @@ Traceback — exception/assertion; expected/observed values; test line; call pat
 
 
 ## B. Stage 7 baseline and safe preparation
-
-- Stage 7 code SHA and requirement baseline: 
-- Baseline test command / working directory / observed result / evidence: 
-- Clean preparation SHA if a record-only commit followed Stage 7: 
-- Branch and preparer / how teammates obtained this branch: 
-- Downloaded tool version, source SHA256 and --check outcome: 
+- Stage 7 code SHA and requirement baseline: bafa1c10378f6d97b5e6fab8742c88c2b6591665 ("Complete Stage 7 testing and evidence"), the main-branch checkpoint immediately before Stage 8 preparation. Requirements baseline: revision 2, as specified by the Stage 8 handout.
+- Baseline test command / working directory / observed result / evidence: Retrospectively tested the unchanged Stage 7 checkpoint in ~/Documents/stage07-baseline-check/project using ../../st1-assignment-3/.venv/bin/python -m pytest -q. Observed result: 16 passed in 0.04s. This is not the original preparation-time run. The earlier Stage 7 record reports 13 passing tests without identifying its tested SHA.
+- Baseline evidence: [Retrospective Stage 7 verification](evidence/stage07_baseline_retrospective.txt).- Preparation or recovery issues and resolution: The supplied Stage 7 record lacks a verified integrated SHA and clean-tree evidence. Resolve this evidence gap with the group and tutor. Do not substitute the later Stage 8 passing result for the original baseline.- Branch and preparer / how teammates obtained this branch: 
+- Downloaded tool version, source SHA256 and --check outcome: bafa1c10378f6d97b5e6fab8742c88c2b6591665
 - --apply and --verify output summaries / artefact references: 
-- Bounded diff inspected and recovery location (not committed): 
-- Prepared faulty-state commit SHA: 
+- Bounded diff inspected and recovery location (not committed): Inspected the preparation diff at d44b1c109d201641974dcba38e4095974e7018d8. Only project/smartcare/data_store.py changed. find_appointment() was changed from dictionary lookup to iteration excluding cancelled appointments. has_practitioner_conflict() changed the practitioner comparison from == to != and the enum status comparison to a string comparison. Recovery metadata remains in project/.stage8_faults/, untracked and ignored by .gitignore line 8. This diff inspection was performed retrospectively.- Prepared faulty-state commit SHA: d44b1c109d201641974dcba38e4095974e7018d8.- Prepared faulty-state commit SHA: 
 - Preparation or recovery issues and resolution, if any: 
 - Initial prepared full-suite command / result / key failures: 
 
@@ -471,7 +468,7 @@ Response: Reproduce and record the failure, form human hypotheses before consult
 - [ ] One genuine refactor verified under passing before/after tests.
 - [ ] Human PR review, feedback resolution and integrated retest recorded.
 - [ ] Tutorial, three reflections and ten formative responses complete.
-- [ ] Local recovery metadata excluded from submitted source.
+- [x] Local recovery metadata excluded from submitted source.
 - [ ] Same project and full suite ready for Stage 9 after Stage 8 integration, verification and recording.
 
 Verified integrated code SHA / result: Pending the merge and integrated retest described in I. The verified repair-branch checkpoint is 3f24502d16277ec256e51cdc96ce123d9861c2fd, where python -m pytest -q returned 16 passed in 0.01s. This is not yet evidence of integrated verification.
