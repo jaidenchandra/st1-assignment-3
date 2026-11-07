@@ -1,0 +1,58 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.7, pytest-8.3.5, pluggy-1.7.0 -- /Users/ADMIN/Documents/st1-assignment-3/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/ADMIN/Documents/stage08-retro-check/project
+collecting ... collected 2 items
+
+tests/test_regressions.py::test_f8_01_conflict_rejection_preserves_store FAILED [ 50%]
+tests/test_regressions.py::test_f8_02_cancelled_history_and_guard_preserve_store FAILED [100%]
+
+=================================== FAILURES ===================================
+________________ test_f8_01_conflict_rejection_preserves_store _________________
+
+    def test_f8_01_conflict_rejection_preserves_store():
+        store = SmartCareDataStore()
+        patients = PatientService(store)
+        practitioners = PractitionerService(store)
+        service = AppointmentService(store)
+    
+        patients.register_patient("P1", "Synthetic Patient")
+        practitioners.register_practitioner("D1", "Practitioner One", "GP")
+        practitioners.register_practitioner("D2", "Practitioner Two", "GP")
+    
+        when = datetime(2026, 10, 1, 9)
+        first = service.book_appointment("A1", "P1", "D1", when)
+        before = store.list_appointments()
+    
+>       with pytest.raises(ValueError):
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_regressions.py:28: Failed
+____________ test_f8_02_cancelled_history_and_guard_preserve_store _____________
+
+    def test_f8_02_cancelled_history_and_guard_preserve_store():
+        store = SmartCareDataStore()
+        patients = PatientService(store)
+        practitioners = PractitionerService(store)
+        service = AppointmentService(store)
+    
+        patients.register_patient("P1", "Synthetic Patient")
+        practitioners.register_practitioner("D1", "Practitioner One", "GP")
+    
+        appointment = service.book_appointment(
+            "A1", "P1", "D1", datetime(2026, 10, 1, 9)
+        )
+    
+        assert service.cancel_appointment("A1") is appointment
+        assert appointment.status == AppointmentStatus.CANCELLED
+        assert store.list_appointments() == [appointment]
+>       assert store.find_appointment("A1") is appointment
+E       AssertionError: assert None is <smartcare.domain.Appointment object at 0x106bdc190>
+E        +  where None = find_appointment('A1')
+E        +    where find_appointment = <smartcare.data_store.SmartCareDataStore object at 0x106ab6ad0>.find_appointment
+
+tests/test_regressions.py:59: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_regressions.py::test_f8_01_conflict_rejection_preserves_store
+FAILED tests/test_regressions.py::test_f8_02_cancelled_history_and_guard_preserve_store
+============================== 2 failed in 0.04s ===============================

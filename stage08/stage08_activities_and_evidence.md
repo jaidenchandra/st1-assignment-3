@@ -348,27 +348,13 @@ Evidence references:- [Focused regression results](evidence/regressions_after.tx
 
 Explain how  assertions detect each relevant incorrect result and protect previous behaviour:
 
-For F8-01, assert found is appointment checks that lookup returns the original retained object rather than None or a replacement. The service cancellation test checks that cancellation returns the same object, sets its status to CANCELLED and retains it in list_appointments(). Its pytest.raises(ValueError) assertion verifies that repeated cancellation reaches the domain transition guard instead of failing lookup.
-
-For F8-02, pytest.raises(ValueError) detects acceptance of a conflicting same-practitioner/time booking. The following assertion checks that a different practitioner can be booked at that time. Together, these protect against both missed conflicts and incorrect rejection of valid bookings.
-
-The full suite also reruns the earlier domain and service tests to detect regressions in previously tested behaviour.
-
-Unrelated failures investigated / resolution:
-
-No unrelated test failures were observed in the supplied initial run. The two cancellation failures were explained by the same lookup filter defect; the third failure concerned the practitioner conflict comparison. The earlier missing-pytest error was an environment setup issue resolved by installing requirements-dev.txt.
-### Additional focused regression verification
-
-The two focused tests were added after repairs and refactoring.
-
-- Working directory: ~/Documents/st1-assignment-3/project.
-- Focused command: python -m pytest tests/test_regressions.py -v.
-- Actual result: 2 passed in 0.02s.
-- Full-suite command: python -m pytest -q.
-- Actual result: 18 passed in 0.01s.
-- [Test evidence](evidence/regression_tests_18_passed.png).
-- [Regression tests](../project/tests/test_regressions.py).
-
+- F8-01 failed at tests/test_regressions.py:28 with DID NOT RAISE <class 'ValueError'>.
+- F8-02 failed at tests/test_regressions.py:59 because cancelled appointment lookup returned None instead of the retained object.
+- Original faulty checkpoint: d44b1c109d201641974dcba38e4095974e7018d8, with the later regression test file copied in.
+- Result: 2 failed in 0.04s.
+- The same tests passed on the repaired branch: 2 passed; full suite: 18 passed.
+- This verification was retrospective, performed after repairs and refactoring.
+- [Retrospective failure evidence](evidence/regressions_original_state_retrospective.txt).
 Execution of these new tests against the original faulty checkpoint is not yet verified.
 ## H. Refactoring decision and before/after verification
 
