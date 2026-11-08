@@ -236,22 +236,31 @@ Commit count measures how often changes were recorded, not their value or qualit
 
 1. What is version control?
    A system that tracks changes to files over time so team members can collaborate, inspect history, and recover earlier versions.
+
 2. Why is a feature branch useful?
    It isolates a focused change from the shared main branch until it is tested and reviewed.
+
 3. What makes a commit a good engineering commit?
    A focused, coherent change with a clear message explaining the behavior or purpose, ideally supported by appropriate tests.
+
 4. What is a pull request?
    A request to review and merge changes from one branch into another, with a diff, discussion, and verification evidence.
+
 5. What is the purpose of code review?
    To identify defects, confirm requirements and design responsibilities, assess tests and scope, and share understanding before integration.
+
 6. What does a Git diff show?
    The lines added, removed, or changed between file versions or commits.
+
 7. What is a Definition of Done?
    Agreed conditions that must be met before work is considered complete, such as implemented acceptance criteria, tests, review, and integration.
+
 8. What is the appropriate role of GitHub Copilot in pull-request review?
    Copilot can offer additional suggestions, but its claims must be checked against the code and tests. It does not replace human review, and a requested review is not evidence of a completed review.
+
 9. Why should individual contribution not be judged only by commit count?
    Commit counts omit the significance and quality of changes and non-commit work such as testing, review, debugging, design, and coordination.
+
 10. What is the Stage 6 engineering rule?
     The exact wording of the Stage 6 engineering rule is not established in the available evidence. Working principle: trace each requirement through a focused issue, implementation, tests, human-reviewed pull request, and verified integration.
 
