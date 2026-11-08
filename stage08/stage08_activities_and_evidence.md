@@ -486,3 +486,7 @@ Unresolved issues or incomplete checks / owner / next action:
 - Confirm earlier project artefacts are preserved and recovery metadata is excluded from Git.
 
 Handover note: Both identified defects have been repaired, and all 16 existing tests passed at the recorded repair checkpoint. Continue with the same repository and preserve earlier tests and stage records. Stage 8 remains incomplete until the outstanding evidence, refactoring, review and integration checks are resolved. Begin Stage 9 only after Stage 8 has been integrated, verified and recorded.
+Verified integrated code SHA / result: see I.
+Submitted SHA and evidence-only difference if any: [complete]
+Unresolved issues or incomplete checks / owner / next action: [complete]
+Handover note: [complete] 
