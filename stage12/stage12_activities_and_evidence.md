@@ -284,9 +284,9 @@ Not applicable – UG pathway.
 SHA: `[final SHA]`  
 Repository: `[GitHub repository URL]`
 
-**Evidence-only later commit and difference explanation:**  
-[If evidence/README is committed after the tested executable SHA, record that later SHA and state that only documentation/evidence changed. Otherwise write “None”.]
+Evidence-only later commit SHA: 0813d3edae3acf8d6711193f8de20b1da9e5c83d.
 
+The executable SmartCare candidate was tested at c8c6ea1c3a592932f8beabdd99ffb53e05207578. The later commit only completed Stage 6 and Stage 12 evidence/documentation and did not change executable application code. Therefore the previously recorded 60-test regression result remains evidence for the executable candidate.
 **Executable changes after testing and re-verification:**  
 No executable change may be made after the final tested SHA without rerunning the full regression suite and recording the new SHA/result.
 
