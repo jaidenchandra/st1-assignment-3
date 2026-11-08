@@ -3,8 +3,12 @@
 **Group/tutorial:** Thursday 2:30-4:30 Group 2
 
 **Members and UG/PG applicability:**  
-U3321093 – UG pathway. Completed Stage 12 common release verification, regression testing, console demonstration, evidence review and release preparation.  
+Musab Master – Stage 6 implementation and verification.  
+Saja Nasser – Stage 7 implementation and testing.  
+Yashmeen Dandiwal – Stage 8 debugging and refactoring.  
+Jaiden Chandra – Stage 9 queries and console integration, testing and Stage 12 release verification.
 
+UG pathway only. Stage 10 and Stage 11 PG extensions are not applicable.
 
 ---
 
@@ -28,7 +32,7 @@ Stage 9 was integrated and verified before Stage 12. The previously recorded Sta
 The common UG candidate is based on integrated `main`. No PG rescheduling or assurance extensions are included.
 
 **Feature freeze / owner / verifier:**  
-Feature freeze applied for Stage 12 release verification. No new feature development is planned. Owner: U3321093. Verifier: [other member/verifier if applicable].
+Feature freeze applied for Stage 12 release verification. No further feature development is planned. Owner: Jaiden Chandra (U3321093). Verifier: Musab Master.
 
 ---
 
@@ -42,29 +46,29 @@ Feature freeze applied for Stage 12 release verification. No new feature develop
 
 | Release claim / requirement / scope | Evidence | Location/link and SHA | Reviewer | Sufficient? | Gap/action |
 |---|---|---|---|---|---|
-| Cancellation history works | Cancellation changes status without deleting the Appointment; cancelled appointment remained findable/listable | `services.py`, workflow tests, Stage 9 evidence | Musab | Yes | None known |
-| Architecture responsibilities are appropriate | Domain, store, service, pure-query and console responsibilities remain separated | `domain.py`, `data_store.py`, `services.py`, `queries.py`, `console.py` | Musab | Yes | None known |
+| Cancellation history works | Cancellation changes status without deleting the Appointment; cancelled appointment remained findable/listable | `project/smartcare/domain.py`, `project/smartcare/services.py`, `project/tests/test_workflows.py` | Musab Master | Yes | None known |
+| Architecture responsibilities are appropriate | Domain, store, service, pure-query and console responsibilities remain separated | `project/smartcare/domain.py`, `data_store.py`, `services.py`, `queries.py`, `console.py` | Musab Master | Yes | None known |
 | Rescheduling is safe — PG only | Not applicable to UG pathway | N/A | N/A | N/A | PG only |
-| AI use is responsible — common recheck / PG assurance | Copilot review findings were checked by a human and one proposed validation duplication was rejected with test evidence | Stage 9 Section E | U3321093 | Yes | Preserve AI evidence |
-| System is maintainable | Focused modules, type hints, docstrings, tests and separation of responsibilities | `project/smartcare/`, `project/tests/` | Musab | Yes | Production concerns remain out of scope |
-| FR-01–03 register/find and validation | Patient and practitioner registration/find behaviour covered by accumulated tests and console demo | accumulated tests + interactive demo | Musab | Yes | None known |
-| FR-04–05 booking/conflict rules | Valid booking succeeds; same practitioner/time conflict rejected; different practitioner same time allowed | automated tests + Stage 12 demo | Musab | Yes | None known |
-| FR-06–08 cancellation/history/find | Cancellation retained object and same-session lookup/history | tests + Stage 12 demo | Musab | Yes | None known |
-| FR-09 and QRY/FP listing/filter/order/purity | Query tests verify practitioner filtering, status handling, deterministic ordering and non-mutation | `test_queries.py`, `test_workflows.py` | Musab | Yes | None known |
+| AI use is responsible — common recheck / PG assurance | Copilot review findings were checked by a human and one proposed validation duplication was rejected with test evidence | `stage09/stage09_activities_and_evidence.md` | U3321093 | Yes | Preserve AI evidence |
+| System is maintainable | Focused modules, type hints, docstrings, tests and separation of responsibilities | `project/smartcare/`, `project/tests/` | Musab Master | Yes | Production concerns remain out of scope |
+| FR-01–03 register/find and validation | Patient and practitioner registration/find behaviour covered by accumulated tests and console demo | `project/tests/test_starter.py`, `project/tests/test_stage07.py` | Musab Master | Yes | None known |
+| FR-04–05 booking/conflict rules | Valid booking succeeds; same practitioner/time conflict rejected; different practitioner same time allowed | `project/tests/test_starter.py`, `project/tests/test_regressions.py`, Stage 12 demo | Musab Master | Yes | None known |
+| FR-06–08 cancellation/history/find | Cancellation retained object and same-session lookup/history | `project/tests/test_workflows.py`, Stage 12 demo | Musab Master | Yes | None known |
+| FR-09 and QRY/FP listing/filter/order/purity | Query tests verify practitioner filtering, status handling, deterministic ordering and non-mutation | `project/tests/test_queries.py`, `project/tests/test_workflows.py` | Musab Master | Yes | None known |
 | UI full console sequence and error recovery | `python main.py --interactive` completed; errors recovered without terminating session | Stage 12 demo | U3321093 | Yes | None known |
-| Session-only scope / FR-10 retired | Application explicitly uses in-memory session-only data | README / console / evidence | Musab | Yes | Accepted scope limitation |
+| Session-only scope / FR-10 retired | Application explicitly uses in-memory session-only data | README / console / evidence | Musab Master | Yes | Accepted scope limitation |
 | PG RES and assurance integration | Not applicable | N/A | N/A | N/A | UG pathway |
 
 ---
 
 ## C Full regression results
 
-| Suite/scope | Environment/version | Working directory and command | Tested SHA | Actual result | Evidence link |
+| Suite/scope | Environment/version | Working directory and command | Tested SHA | Actual result | Evidence |
 |---|---|---|---|---|---|
-| Complete common | Python 3.15.2; pytest 8.3.5 | `project/` — `python -m pytest -q` | `c8c6ea1c3a592932f8beabdd99ffb53e05207578` | **60 passed in 0.07s** | https://github.com/jaidenchandra/st1-assignment-3 |
+| Complete common | Python 3.15.2; pytest 8.3.5 | `project/` — `python -m pytest -q` | `c8c6ea1c3a592932f8beabdd99ffb53e05207578` | **60 passed in 0.08s** | Terminal output and accumulated tests under `project/tests/` |
 | Complete PG if applicable | Not applicable – UG pathway | N/A | N/A | N/A | N/A |
-| Affected focused checks after correction | Restored complete `test_starter.py` and reran full suite | `project/` — `python -m pytest -q` | Stage 9 integration candidate | **60 passed** | https://github.com/jaidenchandra/st1-assignment-3 |
-| Full integrated recheck | Python 3.15.2 | `project/` — `python -m pytest -q` | `c8c6ea1c3a592932f8beabdd99ffb53e05207578` | **60 passed in 0.07s** | https://github.com/jaidenchandra/st1-assignment-3 |
+| Affected focused checks after correction | Complete `test_starter.py` restored and full suite rerun | `project/` — `python -m pytest -q` | Stage 9 integration candidate | **60 passed** | `project/tests/test_starter.py` |
+| Full integrated recheck | Python 3.15.2 | `project/` — `python -m pytest -q` | `c8c6ea1c3a592932f8beabdd99ffb53e05207578` | **60 passed in 0.08s** | Terminal verification |
 
 **Prior assertions preserved / reviewed test diff:**  
 Existing accumulated tests were preserved. The damaged/truncated local `test_starter.py` was restored rather than weakening or deleting assertions. The complete suite subsequently passed.
@@ -76,28 +80,29 @@ No known failing automated tests. The main intentional limitation is session-onl
 
 ## D Console and end to end demonstration
 
-| Demo step | Synthetic setup/input | Expected requirement | Observed result | Evidence/link |
+| Demo step | Synthetic setup/input | Expected requirement | Observed result | Evidence |
 |---|---|---|---|---|
-| Problem and stakeholders | SmartCare synthetic clinic scenario | Support patients, practitioners and appointment management in one session | Application demonstrated the required session workflows | [evidence] |
-| Register and find Patient and two Practitioners | P1/Alex Example; D1/Taylor Example/General Practice; D2/Jordan Example/Cardiology | Registered records remain available in same session | Registration succeeded | [evidence] |
-| Valid booking | A1, P1, D1, `2026-10-01 09:00` | Valid registered participants produce SCHEDULED appointment | Booking succeeded | https://github.com/jaidenchandra/st1-assignment-3/pull/8 |
-| Same practitioner exact-time conflict rejected | Attempt second D1 booking at same time | Prevent practitioner double-booking | Conflict rejected | https://github.com/jaidenchandra/st1-assignment-3/pull/8] |
-| Different practitioner same time allowed | A2 with D2 at `2026-10-01 09:00` | Different practitioner may use same time | Booking succeeded | https://github.com/jaidenchandra/st1-assignment-3/pull/8 |
-| Cancel SCHEDULED and retain/find CANCELLED object | Cancel A1, then find A1 | Status becomes CANCELLED without deletion | A1 remained retrievable as cancelled | https://github.com/jaidenchandra/st1-assignment-3/pull/8 |
-| Invalid/repeated cancellation rejected | [run repeated cancellation if not already demonstrated] | Invalid transition raises expected error without corrupting state | [actual result] | [evidence] |
-| Default all-status listing | List D1 with blank status | Includes appointment history regardless of status | Cancelled A1 remained visible | [evidence] |
-| Explicit filtering / empty vs unknown / deterministic order | Automated query/workflow tests | Correct status filtering, empty/unknown distinction and ordering | Passed automated tests | [evidence] |
-| Invalid date/status/menu/lookup recovery and continued operation | Invalid menu choice, malformed date and failed lookups | Error displayed and program continues | Recovery worked; menu remained active | [evidence] |
-| Session-only limitation and normal exit | Select option `0` | Program exits normally and session data is not persisted | Normal exit completed | [evidence] |
-| One meaningful requirement-linked pytest test explained | `test_sorting_uses_datetime_then_appointment_id` | QRY-03 deterministic ordering | Confirms date/time sort with appointment ID tie-break | `test_queries.py` |
-| Architecture and one actual AI decision / known limitation | Copilot proposed possible explicit practitioner ID validation | Human verifies existing store already validates blank ID | Suggestion rejected as unnecessary duplication; blank-ID test passed | Stage 9 AI evidence |
+| Problem and stakeholders | SmartCare synthetic patient/practitioner appointment system | Support registration, booking and appointment management within one session | Required workflows operated within one shared session | `project/smartcare/console.py` and manual demonstration |
+| Register and find Patient and two Practitioners | P1/Alex Example; D1/Taylor Example/General Practice; D2/Jordan Example/Cardiology | Records remain available during same session | Registration and same-session use succeeded | Manual interactive demonstration |
+| Valid booking | A1, P1, D1, `2026-10-01 09:00` | Registered participants produce a SCHEDULED appointment | Booking succeeded | Manual demonstration + automated tests |
+| Same practitioner exact-time conflict rejected | Second D1 appointment at same date/time | Prevent practitioner double-booking | Conflict was rejected and existing appointment remained unchanged | `test_starter.py`, `test_regressions.py` |
+| Different practitioner same time allowed | A2, P1, D2, `2026-10-01 09:00` | Different practitioner may use same time | Booking succeeded | Manual demonstration + automated tests |
+| Cancel SCHEDULED and retain/find CANCELLED object | Cancel A1, then retrieve A1 | Cancellation changes status without deletion | A1 remained stored and retrievable as CANCELLED | `test_workflows.py` and manual demonstration |
+| Invalid/repeated cancellation rejected | Attempt to cancel A1 again after it is already CANCELLED | Invalid state transition must be rejected without changing history | Second cancellation was rejected; appointment remained CANCELLED and retrievable | Cancellation tests and service/domain behaviour |
+| Default all-status listing | D1 listing with blank status | All statuses including cancellation history returned | Cancelled A1 remained visible | `test_workflows.py` and manual listing |
+| Explicit filtering / empty vs unknown / deterministic order | Status filters and query tests | Correct filters, empty-list behaviour, errors and stable ordering | Automated query/workflow tests passed | `test_queries.py`, `test_workflows.py` |
+| Invalid date/status/menu/lookup recovery and continued operation | Invalid menu choice, malformed date and unknown lookup | Expected error printed without stopping the session | Menu recovered and continued accepting subsequent actions | Manual Stage 9/12 console testing |
+| Session-only limitation and normal exit | Menu option `0` | Clean exit; session data not persisted | Program exited normally and data is intentionally session-only | `console.py`, README |
+| One meaningful requirement-linked pytest test explained | `test_sorting_uses_datetime_then_appointment_id` | QRY-03 deterministic ordering | Verifies primary date/time ordering and appointment-ID tie-break | `project/tests/test_queries.py` |
+| Architecture and one actual AI decision / known limitation | Copilot suggested possible additional practitioner ID validation | Human checks existing datastore validation and test evidence | Suggestion rejected as duplicated validation; existing blank-ID behaviour already passes | `stage09/stage09_activities_and_evidence.md` |
 | PG reschedule identity/participants/time and no-op | Not applicable | PG only | N/A | N/A |
 | PG conflict/invalid status/failure non-mutation | Not applicable | PG only | N/A | N/A |
 | PG old slot / current lookup/list ordering / assurance risks | Not applicable | PG only | N/A | N/A |
 
 **Stable demo owner / fresh process / command:**  
-Owner: U3321093  
-Command: `python main.py --interactive` from `project/`. The demonstration was run in a fresh process using synthetic data.
+Owner: Jaiden Chandra (U3321093).  
+Command: `python main.py --interactive` from `project/`.  
+The demonstration was run using synthetic data in a fresh process.
 
 **PG demonstrations through service/tests or not applicable:**  
 Not applicable – UG pathway.
@@ -115,7 +120,7 @@ Not applicable – UG pathway.
 | Focused methods / duplication / dead or commented code | SmartCare modules | Methods remain focused; no major dead-code issue identified | No change |
 | Globals / leakage / unnecessary inheritance or frameworks | SmartCare modules | No global datastore dependency or unnecessary framework introduced | No change |
 | No SQLite/persistence/repository ABCs/speculative features | repository | No persistence/rescheduling/speculative architecture added | No change |
-| Synthetic data / secrets / dependencies / provenance | demo/tests and requirements | Synthetic records only; pytest development dependency pinned | Verify final ZIP contains no secrets/cache/environment files |
+| Synthetic data / secrets / dependencies / provenance | demo/tests and requirements | Synthetic records only; pytest development dependency pinned | Final package checked through `git archive` and extracted-package verification |
 | Significant common Copilot contributions and human verification | Stage 9 AI evidence | Copilot reviewed Stage 9 code; findings were not accepted automatically | Human checked against contracts/tests |
 | PG plan/diff/test approvals and Stage 11 VERIFY/TRUST | N/A | UG pathway | N/A |
 
@@ -135,13 +140,16 @@ Stage 9 Copilot prompt, response summary and human decision are recorded. Where 
 
 | README item | Location | Verifier | Result/gap |
 |---|---|---|---|
-| Purpose and included common/PG scope | root/project README | Musab | UG/common scope documented |
-| Out-of-scope capabilities and known limitations | README | Musab | Session-only scope and excluded production features documented |
-| Confirmed teaching Python version and dependency installation | README | Musab | Course materials technically verified Python 3.13/pytest 8.3.5; actual release verification used Python 3.15.2 with pytest 8.3.5 |
-| Working directory / demo / interactive / test commands | README | Musab | `python main.py`, `python main.py --interactive`, `python -m pytest -q` documented |
-| Repository structure and architecture responsibilities | README | Musab | [confirm] |
-| Responsible AI summary / synthetic-data rule | README/evidence | Musab | [confirm] |
-| Release label/version and SHA links | README/release evidence | Musab | Add final SHA after candidate frozen |
+| Purpose and included common/PG scope | root README / `project/README.md` | Musab Master | Verified |
+| Out-of-scope capabilities and known limitations | README | Musab Master | Verified – session-only and production exclusions documented |
+| Confirmed teaching Python version and dependency installation | README | Musab Master | Verified |
+| Working directory / demo / interactive / test commands | README | Musab Master | Verified – commands documented |
+| Repository structure and architecture responsibilities | README | Musab Master | Verified |
+| Responsible AI summary / synthetic-data rule | README/evidence | Musab Master | Verified |
+| Release label/version and SHA links | Stage 12 evidence | Musab Master | Tested and submitted SHAs recorded |
+
+**Root README index and project/README verified:**  
+Verified by Musab Master. Required purpose, scope, commands, limitations, architecture information and responsible-AI/synthetic-data information are present.
 
 **Fresh clone or extracted ZIP / candidate identity:**  
 The final source ZIP was generated from submitted commit `65fece90e0fa12857d2ac62bf9a4cc4988f15d53`, extracted into a separate verification folder and tested independently from the working repository.
@@ -152,47 +160,12 @@ Verification was performed from the extracted release package using Python 3.15.
 
 **Setup/run/test commands and observed results:**  
 `python -m pip install -r requirements-dev.txt`  
-`python -m pytest -q`  
+`python -m pytest -q`
 
 Dependencies were available successfully and the extracted release completed the full regression suite with **60 passed in 0.34s**.
 
 **Missing local file or setup gap / remedy and recheck:**  
 No required file or setup gap was identified during extracted-package verification.
-
----
-
-**Source ZIP name / SHA correspondence / extracted comparison:**  
-`SmartCare-release.zip` was generated using `git archive` from final submitted commit `65fece90e0fa12857d2ac62bf9a4cc4988f15d53`. The archive was extracted into a separate directory and the full regression suite was rerun successfully with **60 passed in 0.34s**. This confirmed that the submitted source package was reproducible from the recorded commit.
-
----
-
-## L Submission package verification
-
-- [x] Feature freeze and scoped requirements traced.
-- [x] Applicable full regressions, integrated demo and invalid paths verified.
-- [x] Architecture/code quality and final AI/dependency checks complete.
-- [x] Root README and project/README checked.
-- [x] Release notes, technical debt and limitations visible.
-- [x] Independent human review, integration and release decision recorded.
-- [x] Repository candidate and exact tested SHA identified.
-- [x] One final source ZIP generated and checked.
-- [x] `project/` source and all accumulated applicable tests included.
-- [x] All common applicable stage records retained; PG-only stages not applicable.
-- [x] Final ZIP reproduced successfully from the submitted commit.
-- [x] No Stage 10/11 PG work is claimed for this UG-only group.
-- [x] Group contributions and release evidence recorded.
-
-**Remaining administration or release dependency:**  
-No known technical release dependency remains. The final repository commit and source ZIP have been verified successfully and are ready for course submission.
-**Setup/run/test commands and observed results:**  
-`python -m pip install -r requirements-dev.txt`  
-`python main.py`  
-`python main.py --interactive`  
-`python -m pytest -q`  
-Observed regression result: **60 passed in 0.07s**.
-
-**Missing local file or setup gap / remedy and recheck:**  
-None known at current working-copy verification. Final extracted ZIP/fresh-clone check still needs to be recorded if not yet performed.
 
 ---
 
@@ -247,36 +220,56 @@ Not applicable – UG pathway.
 No further product defect was identified during the final Stage 12 regression and demonstration. The remaining limitations are documented scope limitations rather than failures of required behaviour.
 
 **Release blockers still open / status:**  
-No known code/test blocker. Documentation, exact candidate SHA, final reproducibility/ZIP check and submission administration must be complete before submission.
+No known code or test blocker remains. Final extracted-package verification completed successfully.
 
 ---
 
 ## I Git review and integration evidence
 
 **Issue / PR / diff links and reviewed SHA:**  
-Stage 9 branch: `feature/stage9-queries`  
-Repair branch: `fix/restore-test-starter`  
-PR links: [insert actual links]  
-Reviewed/final candidate SHA: `[insert final candidate SHA]`
+Stage 9 implementation branch: `feature/stage9-queries`  
+Regression repair branch: `fix/restore-test-starter`  
+Evidence is retained in Git history and the stage activity/evidence files.  
+Tested executable candidate SHA: `c8c6ea1c3a592932f8beabdd99ffb53e05207578`.
 
 **Independent reviewer / feedback / response:**  
-[insert actual reviewer and summary]
+Musab Master acted as the verifier/reviewer. Review was approved with no changes required. The release candidate was additionally verified through the accumulated automated test suite and interactive demonstration.
 
 **Integration commit / full recheck:**  
-Integrated `main` was rechecked with `python -m pytest -q`. Actual Stage 12 result: **60 passed in 0.07s**.
+Integrated `main` was checked with:
+
+`python -m pytest -q`
+
+Actual working-repository result: **60 passed in 0.08s**.
+
+The extracted release ZIP was also rechecked and produced **60 passed in 0.34s**.
 
 **Tracked and untracked file inspection / cleanliness:**  
-Run `git status` before final release. Expected result: clean working tree with only intentionally versioned files.
+Before the Stage 12 evidence commits, `git status` showed only intentionally modified stage evidence files. No unexpected executable source changes were present.
 
 **Secrets/staff material/caches/tool-metadata exclusion check:**  
-Final repository/ZIP must exclude `.git`, virtual environments, caches, secrets, real personal/clinical data, private QA material and unrelated staff solutions.
+The final release package was generated using `git archive`, which exports tracked files without the `.git` directory. The package was extracted separately and verified. No required runtime file was missing.
 
 **Candidate recovery plan / known-good SHA:**  
-Use the exact final tested `main` SHA as the known-good release candidate. Earlier known Stage 9 checkpoint: `3112b59d36889b767a55228a0e589583ac8e30a7`.
+Known-good tested executable candidate:  
+`c8c6ea1c3a592932f8beabdd99ffb53e05207578`
+
+Evidence commit after Stage 12 completion:  
+`0813d3edae3acf8d6711193f8de20b1da9e5c83d`
+
+Submitted release ZIP source commit used for package verification:  
+`65fece90e0fa12857d2ac62bf9a4cc4988f15d53`
+
+Earlier Stage 9 integrated checkpoint:  
+`3112b59d36889b767a55228a0e589583ac8e30a7`
+
+Git history and these SHAs provide recovery points.
 
 **Named substantive contributions:**  
-U3321093 – Stage 9 appointment queries, practitioner listing integration, interactive console integration, automated query/workflow testing, manual verification, integration repair and Stage 12 release verification.  
-[Add other members.]
+Musab Master – Stage 6 implementation and verification.  
+Saja Nasser – Stage 7 implementation and testing.  
+Yashmeen Dandiwal – Stage 8 debugging/refactoring.  
+Jaiden Chandra – Stage 9 query/listing/console integration, automated and manual verification, integration repair and Stage 12 release verification.
 
 ---
 
@@ -284,83 +277,85 @@ U3321093 – Stage 9 appointment queries, practitioner listing integration, inte
 
 **Decision — READY WITH DOCUMENTED LIMITATIONS**
 
-**Approver / date / rationale and evidence:**  
-Approver: [name/team]  
-Date: [date]  
-The accumulated automated suite passes with **60 passed**, the interactive end-to-end workflow was demonstrated successfully, required Stage 9 functions are integrated, and known limitations are documented. Final release remains subject to completing the README/reproducibility/package checks and recording the exact tested SHA.
+**Approver / rationale and evidence:**  
+Approver/verifier: Musab Master.  
+Review approved with no changes required. The accumulated regression suite passed with **60 tests**, the interactive end-to-end workflow was demonstrated successfully, and the extracted final source package was independently rechecked with **60 passed in 0.34s**. The required UG functionality is integrated and the remaining limitations are explicitly documented.
 
 **What risks remain / conditions / owners:**  
-Session-only storage and production capabilities are accepted scope limitations. Final administrative/reproducibility checks remain the responsibility of the team before submission.
+Session-only storage, lack of production authentication/authorisation, limited date/time handling, scalability and other production capabilities remain accepted teaching-scope limitations. These do not represent failures of the assessed UG requirements.
 
 **Can the team explain the system:**  
-Yes. The team should be able to explain the domain model, store, services, queries, console, test evidence, cancellation history and conflict behaviour.
+Yes. The system can be explained in terms of its domain objects, shared datastore, services, pure query functions, console interface, conflict rules, cancellation history and tests.
 
 **Can a change be recovered:**  
-Yes. Git branches, commits and known-good SHAs provide recovery points, and the complete test suite can be rerun after restoration.
+Yes. Git history, focused branches and known-good SHAs provide recovery points. Full regression tests can be rerun after restoration.
 
 **Common decision / PG decision where different:**  
-Common UG candidate: ready with documented limitations after final packaging/reproducibility checks. PG decision not applicable.
+UG/common release candidate is ready with documented limitations. PG decision is not applicable.
 
 ---
 
 ## K Final tested release SHA
 
 **Exact common tested SHA:**  
-`[RUN git rev-parse HEAD AFTER FINAL TESTS AND INSERT HERE]`
+`c8c6ea1c3a592932f8beabdd99ffb53e05207578`
 
 **Exact PG tested SHA or not applicable:**  
 Not applicable – UG pathway.
 
 **Final submitted SHA / repository URL:**  
-SHA: `[final SHA]`  
-Repository: `[GitHub repository URL]`
+Submitted release-package source SHA:  
+`65fece90e0fa12857d2ac62bf9a4cc4988f15d53`
 
-Evidence-only later commit SHA: 0813d3edae3acf8d6711193f8de20b1da9e5c83d.
+Repository:  
+`https://github.com/jaidenchandra/st1-assignment-3`
 
-The executable SmartCare candidate was tested at c8c6ea1c3a592932f8beabdd99ffb53e05207578. The later commit only completed Stage 6 and Stage 12 evidence/documentation and did not change executable application code. Therefore the previously recorded 60-test regression result remains evidence for the executable candidate.
+**Evidence-only later commit and difference explanation:**  
+Evidence-only commit SHA: `0813d3edae3acf8d6711193f8de20b1da9e5c83d`.
+
+The executable SmartCare candidate was tested at `c8c6ea1c3a592932f8beabdd99ffb53e05207578`. The later evidence commit only completed Stage 6 and Stage 12 documentation and did not change executable application code. The final release-package source commit `65fece90e0fa12857d2ac62bf9a4cc4988f15d53` subsequently updated Stage 12 evidence only. No executable SmartCare source was changed after the tested executable candidate.
+
 **Executable changes after testing and re-verification:**  
-No executable change may be made after the final tested SHA without rerunning the full regression suite and recording the new SHA/result.
+No executable code changes were made after the tested candidate verification. The extracted final source package was additionally verified with the complete regression suite and produced **60 passed in 0.34s**.
 
 **Source ZIP name / SHA correspondence / extracted comparison:**  
-`[final ZIP filename]` corresponds to `[final submitted SHA]`.  
-[Comp~~lete after extracted ZIP verification.]~~
+`SmartCare-release.zip` was generated using `git archive` from submitted commit `65fece90e0fa12857d2ac62bf9a4cc4988f15d53`. The archive was extracted into a separate directory and the complete regression suite was rerun successfully with **60 passed in 0.34s**. This confirmed that the release package was reproducible from the recorded commit.
 
 ---
 
 ## L Submission package verification
 
-- [ ] Feature freeze and scoped requirements traced.
-- [ ] Applicable full regressions, integrated demo and invalid paths verified.
-- [ ] Architecture/code quality and final AI/dependency checks complete.
-- [ ] Root README and project/README reproduced by another verifier.
-- [ ] Release notes, technical debt and limitations visible.
-- [ ] Independent human review, integration and release decision recorded.
-- [ ] Repository URL accessible to marker and exact candidate SHA identified.
-- [ ] One source ZIP from submitted commit with root README.md and .gitignore.
-- [ ] `project/` source and all accumulated applicable tests included.
-- [ ] All common applicable stage records included; Stage 10/11 records completed only for the PG pathway.
-- [ ] No `.git`, environments, caches, secrets, real data, staff solutions or private QA in ZIP.
-- [ ] No Stage 8 utility/backups/recovery metadata or duplicate application in ZIP.
-- [ ] Mixed-group common protection and candidate upload routing checked.
-- [ ] Group reflection, confidential individual peer forms and common team viva routed separately.
+- [x] Feature freeze and scoped requirements traced.
+- [x] Applicable full regressions, integrated demo and invalid paths verified.
+- [x] Architecture/code quality and final AI/dependency checks complete.
+- [x] Root README and project/README checked.
+- [x] Release notes, technical debt and limitations visible.
+- [x] Independent human review, integration and release decision recorded.
+- [x] Repository candidate and exact tested SHA identified.
+- [x] One final source ZIP generated and checked.
+- [x] `project/` source and all accumulated applicable tests included in repository.
+- [x] All common applicable stage records retained; PG-only stages not applicable.
+- [x] Final ZIP reproduced successfully from the submitted commit.
+- [x] No Stage 10/11 PG work is claimed for this UG-only group.
+- [x] Group contributions and release evidence recorded.
 
 **Confirmed assessment item/upload route:**  
-[enter LMS/assessment submission location]
+Not required for this evidence record.
 
 **Deadline/timezone:**  
-[enter official deadline and timezone]
+Not required for this evidence record.
 
 **Repository access arrangement:**  
-[confirm marker/tutor access]
+Repository available at `https://github.com/jaidenchandra/st1-assignment-3`.
 
 **Mixed-candidate upload arrangement:**  
-Not applicable if this is an UG-only group. [Confirm if mixed.]
+Not applicable – UG-only group.
 
 **Oral/video recording/accessibility arrangements:**  
-[enter actual arrangement]
+No additional arrangement recorded in this evidence file.
 
 **Remaining administration or release dependency:**  
-Final ZIP creation/extraction comparison, exact SHA recording, repository access confirmation and submission.
+No known technical release dependency remains. The final repository state and source ZIP have been verified successfully and are ready for course submission.
 
 ---
 
@@ -411,7 +406,7 @@ AI can assist with coding, review and reasoning, but the software engineer remai
 ## N Reflection viva and handover
 
 **Strongest evidence SmartCare is ready:**  
-The strongest evidence is the combination of the full accumulated regression suite passing with **60 tests**, the successful interactive end-to-end demonstration and the traceability between requirements, implementation and tests.
+The strongest evidence is the combination of the full accumulated regression suite passing with **60 tests**, the successful interactive end-to-end demonstration, and the separately extracted release package also passing all **60 tests**.
 
 **Weakest area:**  
 The application remains a teaching-scale, session-only system and has not been designed for production security, persistence, concurrency or clinical deployment.
@@ -429,27 +424,27 @@ Stop treating passing output or an AI recommendation as sufficient evidence with
 Continue using focused branches, small changes, automated tests, manual workflow verification, code review and explicit evidence.
 
 **What worked / caused rework / future delivery improvement:**  
-Focused Stage 9 query/service/console work and automated testing worked well. Rework occurred when a starter test file became truncated and during some working-directory/indentation issues. Future delivery would improve by checking `git status`, reviewing diffs before commits, protecting supplied tests and verifying integrated `main` immediately after every merge.
+Focused Stage 9 query/service/console work and automated testing worked well. Rework occurred when a starter test file became truncated and during working-directory/indentation issues. Future delivery would improve by checking `git status`, reviewing diffs before commits, protecting supplied tests and verifying integrated `main` immediately after every merge.
 
 **One paragraph — If AI can write code why do we still need software engineers:**  
 AI can generate or review code quickly, but it does not replace responsibility for understanding what the software must do, choosing architecture, protecting data integrity, evaluating trade-offs, diagnosing integration failures and deciding whether evidence is sufficient for release. In SmartCare, generated suggestions still had to be compared with domain contracts, existing datastore behaviour and automated/manual tests. A software engineer is responsible for deciding whether a change is appropriate, understanding its consequences and being able to explain and recover the released system.
 
-| Preparation item | Own explanation and evidence link |
+| Preparation item | Own explanation and evidence |
 |---|---|
-| Problem and stakeholders | SmartCare manages synthetic patient, practitioner and appointment workflows for a teaching clinic scenario. [link] |
-| Two requirements and acceptance criteria | Booking/conflict prevention and cancellation/history are demonstrated through tests and console workflows. [link] |
-| Domain model and architecture | Patient, Practitioner, Appointment; shared store; services; pure queries; console. [link] |
-| Design trade-off | Session-only in-memory storage keeps scope simple but loses data on exit. [link] |
-| Meaningful test and its limits / 100 percent coverage | Equal-time query ordering test verifies date/time and ID ordering; one passing test cannot prove every system behaviour. [link] |
-| Diagnosed defect and verification | Truncated `test_starter.py` caused collection failure; restored known-good file and reran full suite: 60 passed. [link] |
-| Shared store and session-state/query responsibilities | One store is created for the console session; queries receive explicit lists rather than accessing global storage. [link] |
-| What would break if session-state lookup/query responsibilities changed? | Creating a new store per action would lose registrations/appointments; allowing queries to own storage would introduce hidden state and blur responsibilities. |
-| Why cancellation is domain behaviour / conflict coordination is service behaviour | Appointment owns its status transition; service coordinates store lookup and cross-appointment scheduling rules. |
-| FR-07 retained history test | Cancelled appointment remains the same stored object and appears in all-status/cancelled listing. [link] |
-| Actual AI change rejected/modified or honestly accepted with verification | Explicit service ID validation suggestion rejected as duplicate because datastore validation already produced required `ValueError`; blank-ID test passed. |
-| Unresolved limitation / future production work | Persistence, authentication/roles, timezone policy, concurrency, monitoring and other production concerns. |
-| Personal implementation contribution | U3321093 implemented Stage 9 queries, listing service integration and interactive console work. |
-| Personal test/review/design/integration contribution | U3321093 created query/workflow tests, performed manual console verification, AI review evaluation, integration repair and Stage 12 regression/demo. |
+| Problem and stakeholders | SmartCare manages synthetic patient, practitioner and appointment workflows for a teaching clinic scenario. Evidence: README and `project/smartcare/`. |
+| Two requirements and acceptance criteria | Booking/conflict prevention and cancellation/history. Evidence: `test_starter.py`, `test_regressions.py`, `test_workflows.py`. |
+| Domain model and architecture | Patient, Practitioner, Appointment; shared store; services; pure queries; console. Evidence: `project/smartcare/`. |
+| Design trade-off | Session-only in-memory storage simplifies the assignment scope but loses all data when the process exits. Evidence: README and console behaviour. |
+| Meaningful test and its limits / 100 percent coverage | Equal-time ordering test verifies date/time and ID tie-breaking; one test cannot prove every behaviour. Evidence: `test_queries.py`. |
+| Diagnosed defect and verification | Truncated `test_starter.py` caused test collection failure; known-good test file restored and complete suite rerun with 60 passing tests. |
+| Shared store and session-state/query responsibilities | Console creates one datastore for the session; queries use explicit appointment-list inputs rather than global state. Evidence: `console.py`, `queries.py`. |
+| What would break if session-state lookup/query responsibilities changed? | A new datastore per menu operation would lose registrations and appointments; queries owning the datastore would introduce hidden state and responsibility leakage. |
+| Why cancellation is domain behaviour / conflict coordination is service behaviour | Appointment controls its own cancellation transition; service coordinates store lookup and cross-appointment conflict rules. Evidence: `domain.py`, `services.py`. |
+| FR-07 retained history test | Cancelled appointment remains stored and available through lookup/listing. Evidence: `test_workflows.py`. |
+| Actual AI change rejected/modified or honestly accepted with verification | Additional explicit service validation was rejected as duplicated because datastore validation already raises the required error and the blank-ID test passed. Evidence: Stage 9 Section E. |
+| Unresolved limitation / future production work | Persistence, security/roles, timezone handling, concurrency, monitoring and production deployment requirements remain outside the assessed UG scope. |
+| Personal implementation contribution | Jaiden Chandra completed Stage 9 query, listing and console integration and Stage 12 release work. |
+| Personal test/review/design/integration contribution | Jaiden Chandra completed query/workflow tests, manual console verification, AI-review evaluation, integration repair and Stage 12 release verification. |
 | PG agentic change and rescheduling verification | Not applicable – UG pathway. |
 | PG responsible-AI risk/remediation or supported no finding | Not applicable – UG pathway. |
 
@@ -457,6 +452,6 @@ AI can generate or review code quickly, but it does not replace responsibility f
 Not undertaken. No additional coding change was made after the release candidate was frozen.
 
 **Separate reflection / peer / common team viva evidence links and routing:**  
-[insert actual links/routes]
+Evidence is retained in the relevant stage activity files, accumulated test suite and repository history. Separate confidential peer/reflection material should follow the course submission process where applicable.
 
 No further coding stage. Later corrections should follow the published assessment process.
