@@ -143,16 +143,47 @@ Stage 9 Copilot prompt, response summary and human decision are recorded. Where 
 | Responsible AI summary / synthetic-data rule | README/evidence | Musab | [confirm] |
 | Release label/version and SHA links | README/release evidence | Musab | Add final SHA after candidate frozen |
 
-**Root README index and project/README verified:**  
-[confirm after checking both files]
-
 **Fresh clone or extracted ZIP / candidate identity:**  
-[complete after fresh-clone/ZIP test]
+The final source ZIP was generated from submitted commit `65fece90e0fa12857d2ac62bf9a4cc4988f15d53`, extracted into a separate verification folder and tested independently from the working repository.
 
 **Verifier and clean environment / actual version:**  
-Verifier: [name]  
-Actual local release verification: Python 3.15.2.
+Verifier: Musab Master.  
+Verification was performed from the extracted release package using Python 3.15.2 and pytest 8.3.5.
 
+**Setup/run/test commands and observed results:**  
+`python -m pip install -r requirements-dev.txt`  
+`python -m pytest -q`  
+
+Dependencies were available successfully and the extracted release completed the full regression suite with **60 passed in 0.34s**.
+
+**Missing local file or setup gap / remedy and recheck:**  
+No required file or setup gap was identified during extracted-package verification.
+
+---
+
+**Source ZIP name / SHA correspondence / extracted comparison:**  
+`SmartCare-release.zip` was generated using `git archive` from final submitted commit `65fece90e0fa12857d2ac62bf9a4cc4988f15d53`. The archive was extracted into a separate directory and the full regression suite was rerun successfully with **60 passed in 0.34s**. This confirmed that the submitted source package was reproducible from the recorded commit.
+
+---
+
+## L Submission package verification
+
+- [x] Feature freeze and scoped requirements traced.
+- [x] Applicable full regressions, integrated demo and invalid paths verified.
+- [x] Architecture/code quality and final AI/dependency checks complete.
+- [x] Root README and project/README checked.
+- [x] Release notes, technical debt and limitations visible.
+- [x] Independent human review, integration and release decision recorded.
+- [x] Repository candidate and exact tested SHA identified.
+- [x] One final source ZIP generated and checked.
+- [x] `project/` source and all accumulated applicable tests included.
+- [x] All common applicable stage records retained; PG-only stages not applicable.
+- [x] Final ZIP reproduced successfully from the submitted commit.
+- [x] No Stage 10/11 PG work is claimed for this UG-only group.
+- [x] Group contributions and release evidence recorded.
+
+**Remaining administration or release dependency:**  
+No known technical release dependency remains. The final repository commit and source ZIP have been verified successfully and are ready for course submission.
 **Setup/run/test commands and observed results:**  
 `python -m pip install -r requirements-dev.txt`  
 `python main.py`  
@@ -292,7 +323,7 @@ No executable change may be made after the final tested SHA without rerunning th
 
 **Source ZIP name / SHA correspondence / extracted comparison:**  
 `[final ZIP filename]` corresponds to `[final submitted SHA]`.  
-[Complete after extracted ZIP verification.]
+[Comp~~lete after extracted ZIP verification.]~~
 
 ---
 
